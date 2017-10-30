@@ -161,15 +161,22 @@
     <Compile Include="Controllers\BaseAPIController.cs" />
     <Compile Include="Controllers\BasketsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\Products1Controller.cs" />
     <Compile Include="Controllers\ProductsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\Basket.cs" />
     <Compile Include="Models\Initializer.cs" />
-    <Compile Include="Models\Product.cs" />
     <Compile Include="Models\ProductContext.cs" />
+    <Compile Include="Models\Repositories\BasketRepository.cs" />
+    <Compile Include="Models\Repositories\Entities\Basket.cs" />
+    <Compile Include="Models\Repositories\Entities\Product.cs" />
+    <Compile Include="Models\Repositories\Interfaces\IRepository.cs" />
+    <Compile Include="Models\Repositories\ProductRepository.cs" />
+    <Compile Include="Models\Repositories\UnitOfWork.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModels\CreateBasketViewModel.cs" />
+    <Compile Include="ViewModels\EditBasketViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />

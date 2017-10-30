@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using TestTask.Models.Repositories;
 
 namespace TestTask.Models
@@ -16,11 +13,12 @@ namespace TestTask.Models
         {
             get
             {
-                if(productRepository ==null)
-                    productRepository=new ProductRepository(db);
+                if (productRepository == null)
+                    productRepository = new ProductRepository(db);
                 return productRepository;
             }
         }
+
         public BasketRepository Basket
         {
             get
@@ -30,6 +28,7 @@ namespace TestTask.Models
                 return basketRepository;
             }
         }
+
         public void Save()
         {
             db.SaveChanges();

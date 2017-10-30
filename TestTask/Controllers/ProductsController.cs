@@ -14,60 +14,48 @@ namespace TestTask.Controllers
 {
     public class ProductsController : ApiController
     {
-        private ProductContext db = new ProductContext();
+        private UnitOfWork unitOfWork;
 
-        public IEnumerable<Product> GetProducts()
+        public ProductsController()
         {
-            return db.Products;
+            unitOfWork = new UnitOfWork();
         }
 
-
-        public Product GetProduct(int id)
+        public IQueryable<Product> GetBaskets()
         {
-            Product product = db.Products.Find(id);
-            return product;
+            return unitOfWork.Product.GetAll();
+        }
+
+        public Product GetBasket(int id)
+        {
+            Product basket = unitOfWork.Product.Get(id);
+            return basket;
         }
 
         [HttpPost]
         [ResponseType(typeof(void))]
         public void CreateProduct([FromBody]Product product)
         {
-            db.Products.Add(product);
-            db.SaveChanges();
+            unitOfWork.Product.Create(product);
         }
 
         [HttpPut]
         [ResponseType(typeof(Product))]
         public void EditBasket(int id, [FromBody]Product product)
         {
-            if (id == product.Id)
-            {
-                db.Entry(product).State = EntityState.Modified;
-
-                db.SaveChanges();
-            }
+            unitOfWork.Product.Update(product);
         }
 
         [HttpDelete]
         [ResponseType(typeof(Product))]
         public void DeleteProduct(int id)
         {
-            Product product = db.Products.Find(id);
-            if (product == null)
-            {
-                NotFound();
-            }
-
-            db.Products.Remove(product);
-            db.SaveChanges();
+            unitOfWork.Product.Delete(id);
         }
 
         protected override void Dispose(bool disposing)
         {
-            if (disposing)
-            {
-                db.Dispose();
-            }
+            unitOfWork.Dispose();
             base.Dispose(disposing);
         }
     }
