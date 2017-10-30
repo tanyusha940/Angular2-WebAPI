@@ -6,7 +6,7 @@ using System.Web;
 
 namespace TestTask.Models
 {
-    public class Initializer : DropCreateDatabaseAlways<ProductContext>
+    public class Initializer : CreateDatabaseIfNotExists<ProductContext>
     {
         protected override void Seed(ProductContext db)
         {
@@ -20,6 +20,7 @@ namespace TestTask.Models
             basket_1.Products.Add(product_2);
             Basket basket_2 = new Basket { Name = "BasketWithVegetables" };
             basket_2.Products.Add(product_3);
+            db.Baskets.AddRange(new List<Basket> {basket_1, basket_2});
             db.SaveChanges();
         }
 

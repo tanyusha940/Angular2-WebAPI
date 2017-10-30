@@ -48,7 +48,7 @@ namespace TestTask.Controllers
             }
         }
 
-        
+        [HttpDelete]
         [ResponseType(typeof(Product))]
         public void DeleteProduct(int id)
         {

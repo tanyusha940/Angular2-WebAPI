@@ -11,11 +11,5 @@ namespace TestTask.Models
         public string Name { get; set; }
         public float Price { get; set; }
         public string Description { get; set; }
-
-        public ICollection<Basket> Baskets { get; set; }
-        public Product()
-        {
-            Baskets = new List<Basket>();
-        }
     }
 }
