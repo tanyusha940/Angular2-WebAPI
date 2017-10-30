@@ -12,55 +12,55 @@ using TestTask.Models;
 
 namespace TestTask.Controllers
 {
-    public class ProductsController : ApiController
+    public class BasketsController : ApiController
     {
         private ProductContext db = new ProductContext();
 
-        public IEnumerable<Product> GetProducts()
+        public IEnumerable<Basket> GetBaskets()
         {
-            return db.Products;
+            return db.Baskets;
         }
-
-
-        public Product GetProduct(int id)
+        public Basket GetBastBasket(int id)
         {
-            Product product = db.Products.Find(id);
-            return product;
+            Basket basket = db.Baskets.Find(id);
+            return basket;
         }
 
         [HttpPost]
         [ResponseType(typeof(void))]
-        public void CreateProduct([FromBody]Product product)
+        public void CreateBasket([FromBody]Basket basket)
         {
-            db.Products.Add(product);
+            db.Baskets.Add(basket);
             db.SaveChanges();
         }
 
         [HttpPut]
-        [ResponseType(typeof(Product))]
-        public void EditBasket(int id, [FromBody]Product product)
+        [ResponseType(typeof(Basket))]
+        public void EditBasket(int id, [FromBody]Basket basket)
         {
-            if (id == product.Id)
+            if (id == basket.Id)
             {
-                db.Entry(product).State = EntityState.Modified;
+                db.Entry(basket).State = EntityState.Modified;
 
                 db.SaveChanges();
             }
         }
 
-        
-        [ResponseType(typeof(Product))]
-        public void DeleteProduct(int id)
+
+        [ResponseType(typeof(Basket))]
+        public void DeleteBasket(int id)
         {
-            Product product = db.Products.Find(id);
-            if (product == null)
+            Basket basket = db.Baskets.Find(id);
+            if (basket == null)
             {
                 NotFound();
             }
 
-            db.Products.Remove(product);
+            db.Baskets.Remove(basket);
             db.SaveChanges();
         }
+
+
 
         protected override void Dispose(bool disposing)
         {
@@ -70,5 +70,7 @@ namespace TestTask.Controllers
             }
             base.Dispose(disposing);
         }
+
+       
     }
 }
