@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Description;
 using TestTask.Models;
@@ -6,7 +7,7 @@ using TestTask.ViewModels;
 
 namespace TestTask.Controllers
 {
-    public class BasketsController : ApiController
+    public class BasketsController : BaseAPIController
     {
         private UnitOfWork unitOfWork;
 

@@ -39,5 +39,6 @@ namespace TestTask.Models.Repositories
                 db.Products.Remove(product);
             }
         }
+
     }
 }

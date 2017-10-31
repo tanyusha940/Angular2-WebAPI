@@ -12,7 +12,7 @@ namespace TestTask.Controllers
 {
     public class BaseAPIController : ApiController
     {
-        protected readonly ProductContext productContext = new ProductContext();
+        protected readonly ProductContext db = new ProductContext();
         protected HttpResponseMessage ToJsonProduct(dynamic obj)
         {
             var response = Request.CreateResponse(HttpStatusCode.OK);
