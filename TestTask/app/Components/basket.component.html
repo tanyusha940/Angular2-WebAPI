@@ -11,17 +11,23 @@
                 <thead>
                     <tr>
                         <th>Name</th>
+                        <th>Products</th>
                         <th></th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let basket of baskets">
-                        <td>{{basket.Name}}</td>
-                        <td>
-                            <button title="Edit" class="btn btn-primary" (click)="editBasket(basket.Id)">Edit</button>
-                            <button title="Delete" class="btn btn-danger" (click)="deleteBasket(basket.Id)">Delete</button>
-                        </td>
-                    </tr>
+                <tr *ngFor="let basket of baskets">
+                    <td>{{basket.Name}}</td>
+                    <td>
+                        <ul *ngIf="basket.Products">
+                            <li *ngFor="let product of basket.Products">{{product.Name}}</li>
+                        </ul>
+                    </td>
+                    <td>
+                        <button title="Edit" class="btn btn-primary" (click)="editBasket(basket.Id)">Edit</button>
+                        <button title="Delete" class="btn btn-danger" (click)="deleteBasket(basket.Id)">Delete</button>
+                    </td>
+                </tr>
                 </tbody>
             </table>
             <div>
