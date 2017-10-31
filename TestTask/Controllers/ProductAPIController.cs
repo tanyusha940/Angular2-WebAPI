@@ -13,24 +13,24 @@ namespace TestTask.Controllers
     {
         public HttpResponseMessage Get()
         {
-            return ToJson(productContext.Products.AsEnumerable());
+            return ToJsonProduct(productContext.Products.AsEnumerable());
         }
 
         public HttpResponseMessage Post([FromBody]Product value)
         {
             productContext.Products.Add(value);
-            return ToJson(productContext.SaveChanges());
+            return ToJsonProduct(productContext.SaveChanges());
         }
 
         public HttpResponseMessage Put(int id, [FromBody]Product value)
         {
             productContext.Entry(value).State = EntityState.Modified;
-            return ToJson(productContext.SaveChanges());
+            return ToJsonProduct(productContext.SaveChanges());
         }
         public HttpResponseMessage Delete(int id)
         {
             productContext.Products.Remove(productContext.Products.FirstOrDefault(x => x.Id == id));
-            return ToJson(productContext.SaveChanges());
+            return ToJsonProduct(productContext.SaveChanges());
         }
     }
 }
