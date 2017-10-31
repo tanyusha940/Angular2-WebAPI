@@ -1,3 +1,3 @@
 ﻿export class Global {
-    public static BASE_PRODUCT_ENDPOINT = 'api/Products';
+    public static BASE_PRODUCT_ENDPOINT = 'api/Products/';
 }

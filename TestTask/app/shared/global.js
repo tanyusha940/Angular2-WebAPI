@@ -5,6 +5,6 @@ var Global = (function () {
     }
     return Global;
 }());
-Global.BASE_PRODUCT_ENDPOINT = 'api/Products';
+Global.BASE_PRODUCT_ENDPOINT = 'api/Products/';
 exports.Global = Global;
 //# sourceMappingURL=global.js.map
