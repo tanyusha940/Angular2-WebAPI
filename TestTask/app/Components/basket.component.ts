@@ -1,80 +1,79 @@
 ﻿import { Component, OnInit, ViewChild } from '@angular/core';
-import { ProductService } from '../Service/product.service';
+import { BasketService } from '../Service/basket.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ModalComponent } from 'ng2-bs3-modal/ng2-bs3-modal';
-import { IProduct } from '../Models/product';
+import { IBasket } from '../Models/basket';
 import { DBOperation } from '../shared/enum';
 import { Observable } from 'rxjs/Rx';
 import { Global } from '../Shared/global';
 
 @Component({
 
-    templateUrl: 'app/Components/product.component.html'
+    templateUrl: 'app/Components/basket.component.html'
 
 })
 
-export class ProductComponent implements OnInit {
+export class BasketComponent implements OnInit {
 
     @ViewChild('modal') modal: ModalComponent;
-    products: IProduct[];
-    product: IProduct;
+    baskets: IBasket[];
+    basket: IBasket;
     msg: string;
     indLoading: boolean = false;
-    productFrm: FormGroup;
+    basketFrm: FormGroup;
     dbops: DBOperation;
     modalTitle: string;
     modalBtnTitle: string;
 
-    constructor(private fb: FormBuilder, private _productService: ProductService) { }
+    constructor(private fb: FormBuilder, private _basketService: BasketService) { }
 
     ngOnInit(): void {
-        this.productFrm = this.fb.group({
+        this.basketFrm = this.fb.group({
             Id: [''],
             Name: ['', Validators.required],
-            Price: ['', Validators.required],
-            Description: ['']
+            Products: [''],
         });
 
-        this.LoadProducts();    
+        this.Loadbaskets();    
     }
 
-    LoadProducts(): void {
+    Loadbaskets(): void {
         this.indLoading = true;
-        this._productService.get(Global.BASE_PRODUCT_ENDPOINT)
-            .subscribe(products => { this.products = products; this.indLoading = false; },
+        this._basketService.get(Global.BASE_BASKET_ENDPOINT)
+            .subscribe(baskets => { this.baskets = baskets; this.indLoading = false; },
                 error => this.msg = <any>error);
 
     }
 
     SetControlsState(isEnable: boolean) {
-        isEnable ? this.productFrm.enable() : this.productFrm.disable();
+        isEnable ? this.basketFrm.enable() : this.basketFrm.disable();
     }
-    addProduct() {
+    addBasket() {
         this.dbops = DBOperation.create;
         this.SetControlsState(true);
-        this.modalTitle = "Add New Product";
+        this.modalTitle = "Add New basket";
         this.modalBtnTitle = "Add";
-        this.productFrm.reset();
+        this.basketFrm.reset();
         this.modal.open();
     }
 
-    editProduct(id: number) {
+    editBasket(id: number) {
         this.dbops = DBOperation.update;
         this.SetControlsState(true);
-        this.modalTitle = "Edit Product";
+        this.modalTitle = "Edit basket";
         this.modalBtnTitle = "Update";
-        this.product = this.products.filter(x => x.Id == id)[0];
-        this.productFrm.setValue(this.product);
+        this.basket = this.baskets.filter(x => x.Id == id)[0];
+        this.basketFrm.setValue(this.basket);
         this.modal.open();
     }
 
-    deleteProduct(id: number) {
+    deleteBasket(id: number) {
         this.dbops = DBOperation.delete;
         this.SetControlsState(false);
         this.modalTitle = "Confirm to Delete?";
         this.modalBtnTitle = "Delete";
-        this.product = this.products.filter(x => x.Id == id)[0];
-        this.productFrm.setValue(this.product);
+        this.basket = this.baskets.filter(x => x.Id == id)[0];
+        this.basketFrm.setValue(this.basket);
         this.modal.open();
     }
     onSubmit(formData: any) {
@@ -82,12 +81,12 @@ export class ProductComponent implements OnInit {
 
         switch (this.dbops) {
         case DBOperation.create:
-            this._productService.post(Global.BASE_PRODUCT_ENDPOINT, formData._value).subscribe(
+            this._basketService.post(Global.BASE_BASKET_ENDPOINT, formData._value).subscribe(
                 data => {
                     if (data == 1) //Success
                     {
                         this.msg = "Data successfully added.";
-                        this.LoadProducts();
+                        this.Loadbaskets();
                     }
                     else {
                         this.msg = "There is some issue in saving records, please contact to system administrator!";
@@ -101,12 +100,12 @@ export class ProductComponent implements OnInit {
             );
             break;
         case DBOperation.update:
-            this._productService.put(Global.BASE_PRODUCT_ENDPOINT, formData._value.Id, formData._value).subscribe(
+            this._basketService.put(Global.BASE_BASKET_ENDPOINT, formData._value.Id, formData._value).subscribe(
                 data => {
                     if (data == 1) //Success
                     {
                         this.msg = "Data successfully updated.";
-                        this.LoadProducts();
+                        this.Loadbaskets();
                     }
                     else {
                         this.msg = "There is some issue in saving records, please contact to system administrator!";
@@ -120,12 +119,12 @@ export class ProductComponent implements OnInit {
             );
             break;
         case DBOperation.delete:
-            this._productService.delete(Global.BASE_PRODUCT_ENDPOINT, formData._value.Id).subscribe(
+            this._basketService.delete(Global.BASE_BASKET_ENDPOINT, formData._value.Id).subscribe(
                 data => {
                     if (data == 1) //Success
                     {
                         this.msg = "Data successfully deleted.";
-                        this.LoadProducts();
+                        this.Loadbaskets();
                     }
                     else {
                         this.msg = "There is some issue in saving records, please contact to system administrator!";

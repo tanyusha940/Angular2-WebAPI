@@ -9,11 +9,13 @@ import { routing } from './app.routing';
 import { HomeComponent } from './components/home.component';
 import { ProductService } from './Service/product.service';
 import {ProductComponent} from './components/product.component';
+import { BasketService } from './Service/basket.service';
+import {BasketComponent} from './components/basket.component';
 
 @NgModule({
     imports: [BrowserModule, ReactiveFormsModule, HttpModule, routing, Ng2Bs3ModalModule],
-    declarations: [AppComponent, HomeComponent, ProductComponent],
-    providers: [{ provide: APP_BASE_HREF, useValue: '/' }, ProductService],
+    declarations: [AppComponent, HomeComponent, ProductComponent, BasketComponent],
+    providers: [{ provide: APP_BASE_HREF, useValue: '/' }, ProductService, BasketService],
     bootstrap: [AppComponent]
 })
 export class AppModule {

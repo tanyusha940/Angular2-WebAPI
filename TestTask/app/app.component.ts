@@ -10,6 +10,7 @@
                          <ul class='nav navbar-nav'>
                            <li><a [routerLink]="['home']">Home</a></li>
                            <li><a [routerLink]="['product']">Products Management</a></li>
+                           <li><a [routerLink]="['basket']">Baskets Management</a></li>
                       </ul>
                       </div>
                  </nav>    
