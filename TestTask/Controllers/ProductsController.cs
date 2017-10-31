@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Description;
 using TestTask.Models;
@@ -7,7 +6,7 @@ using TestTask.ViewModels;
 
 namespace TestTask.Controllers
 {
-    public class ProductsController : ApiController
+    public class ProductsController : BaseAPIController
     {
         private UnitOfWork unitOfWork;
 
@@ -16,25 +15,25 @@ namespace TestTask.Controllers
             unitOfWork = new UnitOfWork();
         }
 
-        public IEnumerable<Product> GetProducts()
+        public HttpResponseMessage GetProducts()
         {
-            return unitOfWork.Product.GetAll();
+            return ToJson(unitOfWork.Product.GetAll());
         }
 
         [ResponseType(typeof(Product))]
-        public IHttpActionResult GetProduct(int id)
+        public HttpResponseMessage GetProduct(int id)
         {
             Product product = unitOfWork.Product.Get(id);
             if (product == null)
             {
                 return NotFound();
             }
-            return Ok(product);
+            return ToJson(product);
         }
 
         [HttpPost]
         [ResponseType(typeof(void))]
-        public IHttpActionResult CreateProduct([FromBody] CreateProductViewModel product)
+        public HttpResponseMessage CreateProduct([FromBody] CreateProductViewModel product)
         {
             if (!ModelState.IsValid)
             {
@@ -46,13 +45,13 @@ namespace TestTask.Controllers
                 Price = product.Price,
                 Description = product.Description
             });
-            unitOfWork.Save();
-            return Ok();
+            var result = unitOfWork.Save();
+            return ToJson(result);
         }
 
         [HttpPut]
         [ResponseType(typeof(void))]
-        public IHttpActionResult EditProduct([FromBody]EditProductViewModel product)
+        public HttpResponseMessage EditProduct([FromBody]EditProductViewModel product)
         {
             if (!ModelState.IsValid)
             {
@@ -64,16 +63,17 @@ namespace TestTask.Controllers
                 Name = product.Name,
                 Description = product.Description
             });
-            unitOfWork.Save();
-            return Ok();
+            var result = unitOfWork.Save();
+            return ToJson(result);
         }
 
         [HttpDelete]
         [ResponseType(typeof(Product))]
-        public void DeleteProduct(int id)
+        public HttpResponseMessage DeleteProduct(int id)
         {
             unitOfWork.Product.Delete(id);
-            unitOfWork.Save();
+            var result = unitOfWork.Save();
+            return ToJson(result);
         }
 
         protected override void Dispose(bool disposing)

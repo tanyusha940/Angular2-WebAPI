@@ -1,5 +1,5 @@
-﻿using System.Data.Entity;
-using System.Linq;
+﻿using System.Collections.Generic;
+using System.Data.Entity;
 using TestTask.Models.Repositories.Interfaces;
 
 namespace TestTask.Models.Repositories
@@ -7,7 +7,7 @@ namespace TestTask.Models.Repositories
     public class ProductRepository:IRepository<Product>
     {
         private ProductContext db;
-        public IQueryable<Product> GetAll()
+        public IEnumerable<Product> GetAll()
         {
             return db.Products;
         }

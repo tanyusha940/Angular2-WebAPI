@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Description;
@@ -16,13 +17,13 @@ namespace TestTask.Controllers
             unitOfWork = new UnitOfWork();
         }
 
-        public IEnumerable<Basket> GetBaskets()
+        public HttpResponseMessage GetBaskets()
         {
-            return unitOfWork.Basket.GetAll();
+            return ToJson(unitOfWork.Basket.GetAll());
         }
 
         [ResponseType(typeof(Basket))]
-        public IHttpActionResult GetBasket(int id)
+        public HttpResponseMessage GetBasket(int id)
         {
             Basket basket = unitOfWork.Basket.Get(id);
 
@@ -31,12 +32,12 @@ namespace TestTask.Controllers
                 return NotFound();
             }
 
-            return Ok(basket);
+            return ToJson(basket);
         }
 
         [HttpPost]
         [ResponseType(typeof(void))]
-        public IHttpActionResult CreateBasket([FromBody]CreateBasketViewModel basket)
+        public HttpResponseMessage CreateBasket([FromBody]CreateBasketViewModel basket)
         {
             if (!ModelState.IsValid)
             {
@@ -49,14 +50,14 @@ namespace TestTask.Controllers
                 Products = basket.Products
             });
 
-            unitOfWork.Save();
+            var result = unitOfWork.Save();
 
-            return Ok();
+            return ToJson(result);
         }
 
         [HttpPut]
         [ResponseType(typeof(void))]
-        public IHttpActionResult EditBasket([FromBody]EditBasketViewModel basket)
+        public HttpResponseMessage EditBasket([FromBody]EditBasketViewModel basket)
         {
             if (!ModelState.IsValid)
             {
@@ -70,16 +71,17 @@ namespace TestTask.Controllers
                 Products = basket.Products
             });
 
-            unitOfWork.Save();
+            var result = unitOfWork.Save();
 
-            return Ok();
+            return ToJson(result);
         }
 
         [ResponseType(typeof(Basket))]
-        public void DeleteBasket(int id)
+        public HttpResponseMessage DeleteBasket(int id)
         {
             unitOfWork.Basket.Delete(id);
-            unitOfWork.Save();
+            var result = unitOfWork.Save();
+            return ToJson(result);
         }
 
         protected override void Dispose(bool disposing)

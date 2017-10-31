@@ -11,7 +11,7 @@ namespace TestTask.Models.Repositories
     {
         private ProductContext db;
 
-        public IQueryable<Basket> GetAll()
+        public IEnumerable<Basket> GetAll()
         {
             return db.Baskets;
         }

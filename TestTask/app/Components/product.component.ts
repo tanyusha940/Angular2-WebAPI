@@ -15,15 +15,6 @@ import { Global } from '../Shared/global';
 
 export class ProductComponent implements OnInit {
 
-    ngOnInit(): void {
-        this.productFrm = this.fb.group({
-            Id: [''],
-            Name: ['', Validators.required],
-            Prise: [''],
-            Deskription: ['']
-        });
-
-        this.LoadProducts();    }
     @ViewChild('modal') modal: ModalComponent;
     products: IProduct[];
     product: IProduct;
@@ -33,14 +24,28 @@ export class ProductComponent implements OnInit {
     dbops: DBOperation;
     modalTitle: string;
     modalBtnTitle: string;
+
     constructor(private fb: FormBuilder, private _productService: ProductService) { }
+
+    ngOnInit(): void {
+        this.productFrm = this.fb.group({
+            Id: [''],
+            Name: ['', Validators.required],
+            Price: ['', Validators.required],
+            Description: ['']
+        });
+
+        this.LoadProducts();    
+    }
+
     LoadProducts(): void {
         this.indLoading = true;
-        this._productService.get(Global.BASE_USER_ENDPOINT)
+        this._productService.get(Global.BASE_PRODUCT_ENDPOINT)
             .subscribe(products => { this.products = products; this.indLoading = false; },
                 error => this.msg = <any>error);
 
     }
+
     SetControlsState(isEnable: boolean) {
         isEnable ? this.productFrm.enable() : this.productFrm.disable();
     }
@@ -77,7 +82,7 @@ export class ProductComponent implements OnInit {
 
         switch (this.dbops) {
         case DBOperation.create:
-            this._productService.post(Global.BASE_USER_ENDPOINT, formData._value).subscribe(
+            this._productService.post(Global.BASE_PRODUCT_ENDPOINT, formData._value).subscribe(
                 data => {
                     if (data == 1) //Success
                     {
@@ -96,7 +101,7 @@ export class ProductComponent implements OnInit {
             );
             break;
         case DBOperation.update:
-            this._productService.put(Global.BASE_USER_ENDPOINT, formData._value.Id, formData._value).subscribe(
+            this._productService.put(Global.BASE_PRODUCT_ENDPOINT, formData._value.Id, formData._value).subscribe(
                 data => {
                     if (data == 1) //Success
                     {
@@ -115,7 +120,7 @@ export class ProductComponent implements OnInit {
             );
             break;
         case DBOperation.delete:
-            this._productService.delete(Global.BASE_USER_ENDPOINT, formData._value.Id).subscribe(
+            this._productService.delete(Global.BASE_PRODUCT_ENDPOINT, formData._value.Id).subscribe(
                 data => {
                     if (data == 1) //Success
                     {

@@ -29,9 +29,9 @@ namespace TestTask.Models
             }
         }
 
-        public void Save()
+        public int Save()
         {
-            db.SaveChanges();
+            return db.SaveChanges();
         }
 
 

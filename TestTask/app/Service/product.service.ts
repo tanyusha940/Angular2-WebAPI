@@ -6,13 +6,13 @@ import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/catch';
 
 @Injectable()
-export class UserService {
+export class ProductService {
     constructor(private _http: Http) {}
 
     get(url: string): Observable<any> {
         return this._http.get(url)
             .map((response: Response) => <any>response.json())
-            // .do(data => console.log("All: " + JSON.stringify(data)))
+            //.do(data => console.log("All: " + JSON.stringify(data)))
             .catch(this.handleError);
     }
 
