@@ -73,6 +73,12 @@ var BasketComponent = (function () {
         this.basketFrm.setValue(this.basket);
         this.modal.open();
     };
+    BasketComponent.prototype.hasBasketProduct = function (product) {
+        if (!this.basket) {
+            return false;
+        }
+        return this.basket.Products.indexOf(product) > -1;
+    };
     BasketComponent.prototype.onSubmit = function (formData) {
         var _this = this;
         this.msg = "";
