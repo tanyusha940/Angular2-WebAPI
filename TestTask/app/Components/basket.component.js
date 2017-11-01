@@ -11,14 +11,16 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var basket_service_1 = require("../Service/basket.service");
+var product_service_1 = require("../Service/product.service");
 var forms_1 = require("@angular/forms");
 var ng2_bs3_modal_1 = require("ng2-bs3-modal/ng2-bs3-modal");
 var enum_1 = require("../shared/enum");
 var global_1 = require("../Shared/global");
 var BasketComponent = (function () {
-    function BasketComponent(fb, _basketService) {
+    function BasketComponent(fb, _basketService, _productService) {
         this.fb = fb;
         this._basketService = _basketService;
+        this._productService = _productService;
         this.indLoading = false;
     }
     BasketComponent.prototype.ngOnInit = function () {
@@ -28,12 +30,19 @@ var BasketComponent = (function () {
             Products: [''],
         });
         this.Loadbaskets();
+        this.LoadProducts();
     };
     BasketComponent.prototype.Loadbaskets = function () {
         var _this = this;
         this.indLoading = true;
         this._basketService.get(global_1.Global.BASE_BASKET_ENDPOINT)
             .subscribe(function (baskets) { _this.baskets = baskets; _this.indLoading = false; }, function (error) { return _this.msg = error; });
+    };
+    BasketComponent.prototype.LoadProducts = function () {
+        var _this = this;
+        this.indLoading = true;
+        this._productService.get(global_1.Global.BASE_PRODUCT_ENDPOINT)
+            .subscribe(function (products) { _this.products = products; _this.indLoading = false; }, function (error) { return _this.msg = error; });
     };
     BasketComponent.prototype.SetControlsState = function (isEnable) {
         isEnable ? this.basketFrm.enable() : this.basketFrm.disable();
@@ -70,7 +79,7 @@ var BasketComponent = (function () {
         switch (this.dbops) {
             case enum_1.DBOperation.create:
                 this._basketService.post(global_1.Global.BASE_BASKET_ENDPOINT, formData._value).subscribe(function (data) {
-                    if (data == 1) {
+                    if (data >= 1) {
                         _this.msg = "Data successfully added.";
                         _this.Loadbaskets();
                     }
@@ -84,7 +93,7 @@ var BasketComponent = (function () {
                 break;
             case enum_1.DBOperation.update:
                 this._basketService.put(global_1.Global.BASE_BASKET_ENDPOINT, formData._value.Id, formData._value).subscribe(function (data) {
-                    if (data == 1) {
+                    if (data >= 1) {
                         _this.msg = "Data successfully updated.";
                         _this.Loadbaskets();
                     }
@@ -98,7 +107,7 @@ var BasketComponent = (function () {
                 break;
             case enum_1.DBOperation.delete:
                 this._basketService.delete(global_1.Global.BASE_BASKET_ENDPOINT, formData._value.Id).subscribe(function (data) {
-                    if (data == 1) {
+                    if (data >= 1) {
                         _this.msg = "Data successfully deleted.";
                         _this.Loadbaskets();
                     }
@@ -122,7 +131,7 @@ BasketComponent = __decorate([
     core_1.Component({
         templateUrl: 'app/Components/basket.component.html'
     }),
-    __metadata("design:paramtypes", [forms_1.FormBuilder, basket_service_1.BasketService])
+    __metadata("design:paramtypes", [forms_1.FormBuilder, basket_service_1.BasketService, product_service_1.ProductService])
 ], BasketComponent);
 exports.BasketComponent = BasketComponent;
 //# sourceMappingURL=basket.component.js.map

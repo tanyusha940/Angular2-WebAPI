@@ -1,8 +1,10 @@
 ﻿import { Component, OnInit, ViewChild } from '@angular/core';
 import { BasketService } from '../Service/basket.service';
+import { ProductService } from '../Service/product.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ModalComponent } from 'ng2-bs3-modal/ng2-bs3-modal';
 import { IBasket } from '../Models/basket';
+import { IProduct } from '../Models/product';
 import { DBOperation } from '../shared/enum';
 import { Observable } from 'rxjs/Rx';
 import { Global } from '../Shared/global';
@@ -17,6 +19,7 @@ export class BasketComponent implements OnInit {
 
     @ViewChild('modal') modal: ModalComponent;
     baskets: IBasket[];
+    products: IProduct[];
     basket: IBasket;
     msg: string;
     indLoading: boolean = false;
@@ -25,7 +28,7 @@ export class BasketComponent implements OnInit {
     modalTitle: string;
     modalBtnTitle: string;
 
-    constructor(private fb: FormBuilder, private _basketService: BasketService) { }
+    constructor(private fb: FormBuilder, private _basketService: BasketService, private _productService: ProductService) { }
 
     ngOnInit(): void {
         this.basketFrm = this.fb.group({
@@ -34,13 +37,22 @@ export class BasketComponent implements OnInit {
             Products: [''],
         });
 
-        this.Loadbaskets();    
+        this.Loadbaskets();
+        this.LoadProducts();
     }
 
     Loadbaskets(): void {
         this.indLoading = true;
         this._basketService.get(Global.BASE_BASKET_ENDPOINT)
             .subscribe(baskets => { this.baskets = baskets; this.indLoading = false; },
+                error => this.msg = <any>error);
+
+    }
+
+    LoadProducts(): void {
+        this.indLoading = true;
+        this._productService.get(Global.BASE_PRODUCT_ENDPOINT)
+            .subscribe(products => { this.products = products; this.indLoading = false; },
                 error => this.msg = <any>error);
 
     }
@@ -83,7 +95,7 @@ export class BasketComponent implements OnInit {
         case DBOperation.create:
             this._basketService.post(Global.BASE_BASKET_ENDPOINT, formData._value).subscribe(
                 data => {
-                    if (data == 1) //Success
+                    if (data >= 1) //Success
                     {
                         this.msg = "Data successfully added.";
                         this.Loadbaskets();
@@ -102,7 +114,7 @@ export class BasketComponent implements OnInit {
         case DBOperation.update:
             this._basketService.put(Global.BASE_BASKET_ENDPOINT, formData._value.Id, formData._value).subscribe(
                 data => {
-                    if (data == 1) //Success
+                    if (data >= 1) //Success
                     {
                         this.msg = "Data successfully updated.";
                         this.Loadbaskets();
@@ -121,7 +133,7 @@ export class BasketComponent implements OnInit {
         case DBOperation.delete:
             this._basketService.delete(Global.BASE_BASKET_ENDPOINT, formData._value.Id).subscribe(
                 data => {
-                    if (data == 1) //Success
+                    if (data >= 1) //Success
                     {
                         this.msg = "Data successfully deleted.";
                         this.Loadbaskets();

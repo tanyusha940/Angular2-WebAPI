@@ -54,6 +54,13 @@
                     <span>Name*</span>
                     <input type="text" class="form-control" placeholder="Name" formControlName="Name">
                 </div>
+                <div>
+                    <select multiple class="form-control" name="products" placeholder="Products" formControlName="Products">
+                        <option *ngFor="let product of products" [value]="product">
+                            {{product.Name}}
+                        </option>
+                    </select>
+                </div>
             </div>
         </modal-body>
         <modal-footer>

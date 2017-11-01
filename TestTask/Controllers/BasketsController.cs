@@ -44,11 +44,17 @@ namespace TestTask.Controllers
                 return BadRequest(ModelState);
             }
 
-            unitOfWork.Basket.Create(new Basket
+            var newBasket = new Basket
             {
-                Name = basket.Name,
-                Products = basket.Products
-            });
+                Name = basket.Name
+            };
+
+            foreach (var product in basket.Products)
+            {
+                newBasket.Products.Add(unitOfWork.Product.GetAll().FirstOrDefault(x => x.Id == product.Id));
+            }
+
+            unitOfWork.Basket.Create(newBasket);
 
             var result = unitOfWork.Save();
 
@@ -64,12 +70,18 @@ namespace TestTask.Controllers
                 return BadRequest(ModelState);
             }
 
-            unitOfWork.Basket.Update(new Basket
+            var editBasket = new Basket
             {
                 Id = basket.Id,
-                Name = basket.Name,
-                Products = basket.Products
-            });
+                Name = basket.Name
+            };
+
+            foreach (var product in basket.Products)
+            {
+                editBasket.Products.Add(unitOfWork.Product.GetAll().FirstOrDefault(x => x.Id == product.Id));
+            }
+
+            unitOfWork.Basket.Update(editBasket);
 
             var result = unitOfWork.Save();
 

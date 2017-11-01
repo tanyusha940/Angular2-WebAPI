@@ -30,14 +30,18 @@ namespace TestTask.Models.Repositories
             db.Baskets.Add(basket);
         }
 
-        public void Update(Basket basket)
+        public void Update(Basket updatedBasket)
         {
-            db.Entry(basket).State = EntityState.Modified;
+            var basket = db.Baskets.Find(updatedBasket.Id);
+            if (basket == null) return;
+            basket.Products.Clear();
+            basket.Name = updatedBasket.Name;
+            basket.Products = updatedBasket.Products;
         }
 
         public void Delete(int id)
         {
-            Basket basket = db.Baskets.Find(id);
+            var basket = db.Baskets.Find(id);
             if (basket != null)
             {
                 db.Baskets.Remove(basket);
