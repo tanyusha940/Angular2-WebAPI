@@ -1,11 +1,11 @@
 ﻿<div class='panel panel-primary'>
     <div class='panel-heading'>
-        User Management
+        Products
     </div>
     <div class='panel-body'>
         <div class='table-responsive'>
             <div style="padding-bottom:10px"><button class="btn btn-primary" (click)="addProduct()">Add</button></div>
-            <div class="alert alert-info" role="alert" *ngIf="indLoading"><img src="../../images/loading.gif" width="32" height="32" /> Loading...</div>
+            <div class="alert alert-info" role="alert" *ngIf="indLoading">Loading...</div>
             <div *ngIf='products && products.length==0' class="alert alert-info" role="alert">No record found!</div>
             <table class='table table-striped' *ngIf='products && products.length'>
                 <thead>
